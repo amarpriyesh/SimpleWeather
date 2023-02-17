@@ -42,7 +42,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="52dp"
-                android:text="Sunday"
+                android:text="02/16/2023"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/imageView"

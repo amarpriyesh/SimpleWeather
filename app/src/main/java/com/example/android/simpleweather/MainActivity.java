@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         weatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(com.example.android.simpleweather.MainActivity.this, Weather_Activity.class);
+                Intent myIntent = new Intent(com.example.android.simpleweather.MainActivity.this, WeatherActivityJava.class);
                 com.example.android.simpleweather.MainActivity.this.startActivity(myIntent);            }
         });
 

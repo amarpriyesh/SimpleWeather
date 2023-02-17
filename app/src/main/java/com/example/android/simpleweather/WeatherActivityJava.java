@@ -4,9 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -17,10 +14,7 @@ import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import okhttp3.Response;
 
 public class WeatherActivityJava extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,7 +62,7 @@ public class WeatherActivityJava extends AppCompatActivity implements View.OnCli
 
         search = (Button) findViewById(R.id.search);
         search.setOnClickListener(this);
-        editTextTextPersonName = (EditText) findViewById(R.id.editTextTextPersonName);
+        editTextTextPersonName = (EditText) findViewById(R.id.zip_code_edit_text);
         textHandler = new Handler();
         zip = (TextView) findViewById(R.id.zip_code_tv);
 

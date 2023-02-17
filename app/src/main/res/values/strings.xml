@@ -7,4 +7,5 @@
     <string name="group_project">Group Project</string>
     <string name="team_jackson_lily_aaron_parth_and_priyesh">Team Jackson, Lily, Aaron, Parth, and Priyesh</string>
     <string name="firebase_database">Firebase Database</string>
+    <string name="acc_weather_icon">Weather icon</string>
 </resources>

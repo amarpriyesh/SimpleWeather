@@ -13,9 +13,7 @@ public class WeatherViewHolder extends RecyclerView.ViewHolder {
 
     public TextView day;
     public TextView weatherCondition;
-    public TextView unit;
-    public TextView min;
-    public TextView max;
+    public TextView temperature;
     public ImageView img;
 
 
@@ -24,8 +22,6 @@ public class WeatherViewHolder extends RecyclerView.ViewHolder {
         this.day = itemView.findViewById(R.id.day);
         this.img = itemView.findViewById(R.id.imageView);
         this.weatherCondition = itemView.findViewById(R.id.weather_condition);
-        this.max = itemView.findViewById(R.id.max);
-        this.min = itemView.findViewById(R.id.min);
-        this.unit = itemView.findViewById(R.id.unit);
+        this.temperature = itemView.findViewById(R.id.temperature);
     }
 }

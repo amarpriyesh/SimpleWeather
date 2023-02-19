@@ -1,6 +1,7 @@
 package com.example.android.simpleweather;
 
 import android.annotation.SuppressLint;
+import android.view.View;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -38,11 +39,17 @@ class RunnableThread implements Runnable {
                     @Override
                     public void run() {
 
-                        weatherClass.editTextTextPersonName.setText("<<<<<<<<>>>>>>");
+                        weatherClass.loadingText.setVisibility(View.VISIBLE);
+
+                        if (finalI % 3 == 0) {
+                            weatherClass.loadingText.setText("Loading.");
+                        } else if (finalI % 3 == 1) {
+                            weatherClass.loadingText.setText("Loading..");
+                        } else if (finalI % 3 == 2) {
+                            weatherClass.loadingText.setText("Loading...");
+                        }
+
                         weatherClass.weatherList.add(new WeatherModel(finalS, "Winter", "F", finalI, finalI+20));
-
-
-
                     }
                 });
                 Thread.sleep(30);
@@ -60,7 +67,7 @@ class RunnableThread implements Runnable {
                     }
                 });
 
-                Thread.sleep(30);
+                Thread.sleep(500);
 
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -75,6 +82,8 @@ class RunnableThread implements Runnable {
 
                     weatherClass.adapter.notifyDataSetChanged();
                     weatherClass.editTextTextPersonName.setText("LOADED");
+                    weatherClass.loadingText.setVisibility(View.GONE);
+
 
 
 

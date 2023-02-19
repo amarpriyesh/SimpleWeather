@@ -7,50 +7,38 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 class RunnableThread implements Runnable {
-
-
-
-
-    WeatherActivityJava weatherClass ;
+    WeatherActivityJava weatherClass;
 
     public RunnableThread(WeatherActivityJava weatherClass) {
         this.weatherClass = weatherClass;
-
     }
+
     @Override
     public void run() {
-        List<String> sList = null;
+        List<String> sList;
         try {
             sList = new Rest().openConnection();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-
-
-        for(int i = 0; i<sList.size();i++) {
+        for (int i = 0; i < sList.size(); i++) {
             try {
-
                 int finalI = i;
                 String finalS = sList.get(i);
 
-                weatherClass.textHandler.post(new Runnable() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void run() {
+                weatherClass.textHandler.post(() -> {
+                    weatherClass.loadingText.setVisibility(View.VISIBLE);
 
-                        weatherClass.loadingText.setVisibility(View.VISIBLE);
-
-                        if (finalI % 3 == 0) {
-                            weatherClass.loadingText.setText("Loading.");
-                        } else if (finalI % 3 == 1) {
-                            weatherClass.loadingText.setText("Loading..");
-                        } else if (finalI % 3 == 2) {
-                            weatherClass.loadingText.setText("Loading...");
-                        }
-
-                        weatherClass.weatherList.add(new WeatherModel(finalS, "Winter", "F", finalI, finalI+20));
+                    if (finalI % 3 == 0) {
+                        weatherClass.loadingText.setText("Loading.");
+                    } else if (finalI % 3 == 1) {
+                        weatherClass.loadingText.setText("Loading..");
+                    } else if (finalI % 3 == 2) {
+                        weatherClass.loadingText.setText("Loading...");
                     }
+
+                    weatherClass.weatherList.add(new WeatherModel(finalS, "Winter", "F", finalI, finalI+20));
                 });
                 Thread.sleep(30);
 
@@ -58,49 +46,18 @@ class RunnableThread implements Runnable {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void run() {
-
                         weatherClass.editTextTextPersonName.setText(">>");
-
-
-
-
                     }
                 });
-
                 Thread.sleep(500);
-
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
-
-
-            weatherClass.textHandler.post(new Runnable() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void run() {
-
-                    weatherClass.adapter.notifyDataSetChanged();
-                    weatherClass.editTextTextPersonName.setText("LOADED");
-                    weatherClass.loadingText.setVisibility(View.GONE);
-
-
-
-
-
-                }
+            weatherClass.textHandler.post(() -> {
+                weatherClass.adapter.notifyDataSetChanged();
+                weatherClass.editTextTextPersonName.setText("LOADED");
+                weatherClass.loadingText.setVisibility(View.GONE);
             });
-
-
-
         }
-
-
-
-
-
-
-
     }
 }
-

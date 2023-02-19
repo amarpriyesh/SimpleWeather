@@ -1,11 +1,11 @@
 package com.example.android.simpleweather;
 
 public class WeatherModel {
-    private String day;
-    private String weatherCondition;
-    private String unit;
-    private int min;
-    private int max;
+    private final String day;
+    private final String weatherCondition;
+    private final String unit;
+    private final int min;
+    private final int max;
 
 
     public WeatherModel(String day, String weatherCondition, String unit, int min, int max) {

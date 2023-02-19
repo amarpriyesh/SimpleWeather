@@ -40,6 +40,8 @@ public class WeatherActivityJava extends AppCompatActivity implements View.OnCli
 
     public TextView zip;
 
+    public TextView loadingText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +67,7 @@ public class WeatherActivityJava extends AppCompatActivity implements View.OnCli
         editTextTextPersonName = (EditText) findViewById(R.id.zip_code_edit_text);
         textHandler = new Handler();
         zip = (TextView) findViewById(R.id.zip_code_tv);
-
-
+        loadingText = (TextView) findViewById(R.id.loadingText);
     }
 
     @Override
@@ -78,7 +79,6 @@ public class WeatherActivityJava extends AppCompatActivity implements View.OnCli
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     private void getWeather() throws FileNotFoundException {
@@ -104,9 +104,6 @@ public class WeatherActivityJava extends AppCompatActivity implements View.OnCli
         weatherList.addAll(Arrays.asList(testArray));*/
        run = new RunnableThread(this);
         new Thread(run).start();
-
-
-
 
     }
 

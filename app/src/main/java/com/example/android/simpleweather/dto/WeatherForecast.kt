@@ -31,3 +31,13 @@ data class WeatherCondition(
     @SerializedName("main") val main: String,
     @SerializedName("description") val description: String
 )
+
+data class CurrentCondition(
+    @SerializedName("dt") val dt: Long,
+    @SerializedName("temp") val temp: Double,
+)
+
+data class CurrentForecast(
+    @SerializedName("current") val current: List<CurrentCondition>,
+    @SerializedName("weather") val weather: List<WeatherCondition>
+)

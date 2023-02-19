@@ -5,8 +5,10 @@ public class WeatherModel {
     private final WeatherType weatherType;
     private final String weatherDescription;
     private final String unit;
-    private final int min;
-    private final int max;
+    private int min;
+    private int max;
+
+    private int currentTemp;
 
 
     public WeatherModel(String day, WeatherType weatherType, String weatherDescription, String unit, int min, int max) {
@@ -18,6 +20,13 @@ public class WeatherModel {
         this.max = max;
     }
 
+    public WeatherModel(String day, WeatherType weatherType, String weatherDescription, String unit, int currentTemp) {
+        this.day = day;
+        this.weatherType = weatherType;
+        this.weatherDescription = weatherDescription;
+        this.unit = unit;
+        this.currentTemp = currentTemp;
+    }
 
     public String getDay() {
         return day;
@@ -41,5 +50,9 @@ public class WeatherModel {
 
     public int getMax() {
         return max;
+    }
+
+    public int getCurrentTemp() {
+        return currentTemp;
     }
 }

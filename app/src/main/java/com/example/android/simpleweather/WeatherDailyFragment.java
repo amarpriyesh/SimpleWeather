@@ -26,6 +26,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class WeatherDailyFragment extends Fragment {
+
+    private static final String TEMPERATURE_UNIT = "°F";
+
     private SearchViewModel viewModel;
     private FragmentWeatherDailyBinding binding;
     private RecyclerView.Adapter<WeatherViewHolder> adapter;
@@ -51,6 +54,31 @@ public class WeatherDailyFragment extends Fragment {
         return (int) Math.round((kelvin - 273.15) * (9.0 / 5.0) + 32.0);
     }
 
+    private WeatherType weatherIdToWeatherType(int weatherId) {
+        if (200 <= weatherId && weatherId <= 299) {
+            return WeatherType.THUNDERSTORM;
+        }
+        if (300 <= weatherId && weatherId <= 399) {
+            return WeatherType.DRIZZLE;
+        }
+        if (500 <= weatherId && weatherId <= 599) {
+            return WeatherType.RAIN;
+        }
+        if (600 <= weatherId && weatherId <= 699) {
+            return WeatherType.SNOW;
+        }
+        if (700 <= weatherId && weatherId <= 799) {
+            return WeatherType.ATMOSPHERE;
+        }
+        if (weatherId == 800) {
+            return WeatherType.CLEAR;
+        }
+        if (801 <= weatherId && weatherId <= 809) {
+            return WeatherType.CLOUDS;
+        }
+        throw new IllegalArgumentException(String.format("%d is not a recognized weather ID", weatherId));
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -59,8 +87,10 @@ public class WeatherDailyFragment extends Fragment {
             weatherList.clear();
             weatherList.addAll(weatherForecast.getDaily().stream().map(dayForecast ->
                             new WeatherModel(getDateString(dayForecast.getDt()),
-                                    "",
-                                    "F",
+                                    // TODO: Verify that weather list has at least one element
+                                    weatherIdToWeatherType(dayForecast.getWeather().get(0).getId()),
+                                    dayForecast.getWeather().get(0).getMain(),
+                                    TEMPERATURE_UNIT,
                                     kelvinToFahrenheit(dayForecast.getTemperatureRange().getMin()),
                                     kelvinToFahrenheit(dayForecast.getTemperatureRange().getMax())))
                     .collect(Collectors.toList()));

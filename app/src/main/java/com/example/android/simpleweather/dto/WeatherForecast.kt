@@ -13,7 +13,8 @@ data class DayForecast(
     @SerializedName("dt") val dt: Long,
     @SerializedName("sunrise") val sunrise: Long,
     @SerializedName("sunset") val sunset: Long,
-    @SerializedName("temp") val temperatureRange: TemperatureRange
+    @SerializedName("temp") val temperatureRange: TemperatureRange,
+    @SerializedName("weather") val weather: List<WeatherCondition>
 )
 
 data class TemperatureRange(
@@ -26,6 +27,7 @@ data class TemperatureRange(
 )
 
 data class WeatherCondition(
+    @SerializedName("id") val id: Int,
     @SerializedName("main") val main: String,
     @SerializedName("description") val description: String
 )

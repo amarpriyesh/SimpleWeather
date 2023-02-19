@@ -9,11 +9,24 @@ data class WeatherForecast(
     @SerializedName("weather") val weatherConditions: List<WeatherCondition>
 )
 
+data class WeatherForecastHourly(
+    @SerializedName("lat") val latitude: Double,
+    @SerializedName("lon") val longitude: Double,
+    @SerializedName("hourly") val hourly: List<DayForecastHourly>,
+    @SerializedName("weather") val weatherConditions: List<WeatherCondition>
+)
+
 data class DayForecast(
     @SerializedName("dt") val dt: Long,
     @SerializedName("sunrise") val sunrise: Long,
     @SerializedName("sunset") val sunset: Long,
     @SerializedName("temp") val temperatureRange: TemperatureRange,
+    @SerializedName("weather") val weather: List<WeatherCondition>
+)
+
+data class DayForecastHourly(
+    @SerializedName("dt") val dt: Long,
+    @SerializedName("temp") val temperatureRange: Double,
     @SerializedName("weather") val weather: List<WeatherCondition>
 )
 

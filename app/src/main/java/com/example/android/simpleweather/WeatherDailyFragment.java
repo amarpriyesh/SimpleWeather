@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.simpleweather.databinding.FragmentWeatherDailyBinding;
+import com.example.android.simpleweather.dto.DayForecastHourly;
 
 import java.security.KeyException;
 import java.time.Instant;
@@ -56,6 +57,10 @@ public class WeatherDailyFragment extends Fragment {
 
     private String getDateString(long epochSeconds) {
         return getDate(epochSeconds).format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+    }
+
+    private String getDateStringHourly(long epochSeconds) {
+        return getDate(epochSeconds).format(DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm"));
     }
 
     private int kelvinToFahrenheit(double kelvin) {
@@ -101,6 +106,24 @@ public class WeatherDailyFragment extends Fragment {
                                     TEMPERATURE_UNIT,
                                     kelvinToFahrenheit(dayForecast.getTemperatureRange().getMin()),
                                     kelvinToFahrenheit(dayForecast.getTemperatureRange().getMax())))
+                    .collect(Collectors.toList()));
+            if (weatherList.size()<1) {
+                Toast.makeText(getActivity(),"The loaction has no weather data",Toast.LENGTH_SHORT).show();
+            }
+            adapter.notifyDataSetChanged();
+        });
+
+
+        viewModel.getForecastHourly().observe(getViewLifecycleOwner(), weatherForecastHourly -> {
+            weatherList.clear();
+            weatherList.addAll(weatherForecastHourly.getHourly().stream().map(dayForecastHourly ->
+                            new WeatherModel(getDateStringHourly(dayForecastHourly.getDt()),
+
+                                    weatherIdToWeatherType(dayForecastHourly.getWeather().get(0).getId()),
+                                    dayForecastHourly.getWeather().get(0).getMain(),
+                                    TEMPERATURE_UNIT,
+                                    kelvinToFahrenheit(dayForecastHourly.getTemperatureRange()),
+                                    kelvinToFahrenheit(dayForecastHourly.getTemperatureRange())))
                     .collect(Collectors.toList()));
             if (weatherList.size()<1) {
                 Toast.makeText(getActivity(),"The loaction has no weather data",Toast.LENGTH_SHORT).show();

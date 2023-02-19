@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.android.simpleweather.dto.WeatherForecast;
+import com.example.android.simpleweather.dto.WeatherForecastHourly;
 
 import javax.inject.Inject;
 
@@ -25,12 +26,16 @@ public class SearchViewModel extends ViewModel {
 
     private final WeatherRepository weatherRepository;
     private final MutableLiveData<WeatherForecast> _forecast = new MutableLiveData<>();
+
+    private final MutableLiveData<WeatherForecastHourly> _forecastHourly = new MutableLiveData<>();
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
 
     public LiveData<WeatherForecast> getForecast() {
         return _forecast;
     }
-
+    public LiveData<WeatherForecastHourly> getForecastHourly() {
+        return _forecastHourly;
+    }
     public LiveData<Boolean> getIsLoading() {
         return _isLoading;
     }
@@ -75,6 +80,37 @@ public class SearchViewModel extends ViewModel {
 
         }
     });
+
+        weatherRepository.getWeatherDataHourly(latitude, longitude, new Callback<WeatherForecastHourly>() {
+
+
+            @Override
+            public void onResponse(@NonNull Call<WeatherForecastHourly> call, @NonNull Response<WeatherForecastHourly> response) {
+                Log.d(TAG, "Got success response");
+                WeatherForecastHourly body = response.body();
+                if (body != null) {
+                    _forecastHourly.setValue(body);
+                }
+                else{
+
+                    Toast.makeText(context,"Empty response from the server",Toast.LENGTH_SHORT).show();
+
+                }
+                _isLoading.setValue(false);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<WeatherForecastHourly> call, @NonNull Throwable t) {
+                Log.d(TAG, "Got failure response");
+                Log.e(TAG, t.getMessage());
+                _isLoading.setValue(false);
+                Toast.makeText(context,"Got failure response from the server",Toast.LENGTH_SHORT).show();
+                // throw new IllegalStateException(t.getMessage());
+
+            }
+        });
+
+
 
         }
 

@@ -1,6 +1,7 @@
 package com.example.android.simpleweather;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,13 +22,13 @@ public class WeatherActivity extends AppCompatActivity {
     public RecyclerView weatherRecyclerView;
     public List<WeatherModel> weatherList = new ArrayList<>();
     RecyclerView.Adapter<WeatherViewHolder> adapter;
-    public Boolean loading;
     public Handler textHandler;
-    private Button search;
     private RunnableThread run;
     public EditText editTextTextPersonName;
     public TextView zip;
     public TextView loadingText;
+
+    private SearchViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,30 +38,37 @@ public class WeatherActivity extends AppCompatActivity {
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        loading = false;
+        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
         setContentView(R.layout.activity_weather);
+
+        initializeRecyclerView();
+        setOnClickListener();
+
+        editTextTextPersonName = (EditText) findViewById(R.id.zip_code_edit_text);
+        textHandler = new Handler();
+        zip = (TextView) findViewById(R.id.zip_code_tv);
+        loadingText = (TextView) findViewById(R.id.loadingText);
+    }
+
+    private void initializeRecyclerView() {
         weatherRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         weatherRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new WeatherAdapter(weatherList, this);
         // Associates the adapter with the RecyclerView
         weatherRecyclerView.setAdapter(adapter);
+    }
 
-        search = (Button) findViewById(R.id.search);
+    private void setOnClickListener() {
+        Button search = (Button) findViewById(R.id.search);
         search.setOnClickListener(v -> {
-            if (v.getId() == R.id.search) {
-                try {
-                    getWeather();
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                getWeather();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
             }
         });
-        editTextTextPersonName = (EditText) findViewById(R.id.zip_code_edit_text);
-        textHandler = new Handler();
-        zip = (TextView) findViewById(R.id.zip_code_tv);
-        loadingText = (TextView) findViewById(R.id.loadingText);
     }
 
     private void getWeather() throws FileNotFoundException {

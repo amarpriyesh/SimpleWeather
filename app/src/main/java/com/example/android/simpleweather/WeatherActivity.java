@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WeatherActivityJava extends AppCompatActivity implements View.OnClickListener {
+public class WeatherActivity extends AppCompatActivity implements View.OnClickListener {
 
     public RecyclerView weatherRecyclerView;
     public List<WeatherModel> weatherList = new ArrayList<>();

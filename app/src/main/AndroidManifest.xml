@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleWeather">
         <activity
-            android:name=".WeatherActivityJava"
+            android:name=".WeatherActivity"
             android:exported="false" />
         <activity
             android:name=".Weather_Activity"

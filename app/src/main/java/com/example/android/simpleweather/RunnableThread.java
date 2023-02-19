@@ -7,9 +7,9 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 class RunnableThread implements Runnable {
-    WeatherActivityJava weatherClass;
+    WeatherActivity weatherClass;
 
-    public RunnableThread(WeatherActivityJava weatherClass) {
+    public RunnableThread(WeatherActivity weatherClass) {
         this.weatherClass = weatherClass;
     }
 

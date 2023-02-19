@@ -9,8 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.android.simpleweather.databinding.ActivityMainBinding;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -25,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         weatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(com.example.android.simpleweather.MainActivity.this, WeatherActivityJava.class);
+                Intent myIntent = new Intent(com.example.android.simpleweather.MainActivity.this, WeatherActivity.class);
                 com.example.android.simpleweather.MainActivity.this.startActivity(myIntent);            }
         });
 

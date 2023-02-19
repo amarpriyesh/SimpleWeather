@@ -1,19 +1,24 @@
 package com.example.android.simpleweather;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.simpleweather.databinding.FragmentWeatherDailyBinding;
 
+import java.security.KeyException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,7 +44,10 @@ public class WeatherDailyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWeatherDailyBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        viewModel.setContextView(getActivity());
+
         return binding.getRoot();
+
     }
 
     private LocalDateTime getDate(long epochSeconds) {
@@ -87,13 +95,16 @@ public class WeatherDailyFragment extends Fragment {
             weatherList.clear();
             weatherList.addAll(weatherForecast.getDaily().stream().map(dayForecast ->
                             new WeatherModel(getDateString(dayForecast.getDt()),
-                                    // TODO: Verify that weather list has at least one element
+
                                     weatherIdToWeatherType(dayForecast.getWeather().get(0).getId()),
                                     dayForecast.getWeather().get(0).getMain(),
                                     TEMPERATURE_UNIT,
                                     kelvinToFahrenheit(dayForecast.getTemperatureRange().getMin()),
                                     kelvinToFahrenheit(dayForecast.getTemperatureRange().getMax())))
                     .collect(Collectors.toList()));
+            if (weatherList.size()<1) {
+                Toast.makeText(getActivity(),"The loaction has no weather data",Toast.LENGTH_SHORT).show();
+            }
             adapter.notifyDataSetChanged();
         });
 
@@ -108,12 +119,23 @@ public class WeatherDailyFragment extends Fragment {
         initializeRecyclerView();
 
         binding.search.setOnClickListener(v -> {
-            LocationInfo locationInfo = new ZipCodeReader(getResources()).getLatLong(binding.zipCodeEditText.getText().toString());
-            if (locationInfo == null) {
-                // TODO: Deal with null locationInfo
-                throw new IllegalStateException();
+
+
+
+            try {
+                LocationInfo locationInfo = getLocation();
+                viewModel.getWeatherData(locationInfo.getLatitude(), locationInfo.getLongitude());
             }
-            viewModel.getWeatherData(locationInfo.getLatitude(), locationInfo.getLongitude());
+
+            catch (NullPointerException e) {
+                Toast.makeText(getActivity(), e.getMessage()+" Try other zip codes",Toast.LENGTH_SHORT).show();
+
+            }
+            catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_SHORT).show();
+
+
+            }
         });
     }
 
@@ -125,4 +147,24 @@ public class WeatherDailyFragment extends Fragment {
         // Associates the adapter with the RecyclerView
         weatherRecyclerView.setAdapter(adapter);
     }
+
+    private LocationInfo getLocation() {
+        LocationInfo locationInfo;
+        try {
+            locationInfo = new ZipCodeReader(getResources()).getLatLong(binding.zipCodeEditText.getText().toString());
+
+        }
+        catch (Exception e){
+            throw new NullPointerException("Zip not found");
+
+
+        }
+        if (locationInfo==null) {
+            throw new NullPointerException("Zip not found");
+        }
+
+        return locationInfo;
+
+    }
+
 }

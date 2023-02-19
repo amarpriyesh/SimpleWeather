@@ -5,11 +5,16 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 
 class ZipCodeReader(private val resources: Resources) {
-    fun getLatLong(zipCode: String): LocationInfo? {
+
+    fun getLatLong (zipCode: String): LocationInfo? {
         val text = resources.openRawResource(R.raw.zipcodes)
             .bufferedReader().use { it.readText() }
         val zipCodes = Gson().fromJson(text, JsonObject::class.java)
-        val zipCodeObject = zipCodes.get(zipCode)
+        val zipCodeObject =  zipCodes.get(zipCode);
+
+
+
+
         return (zipCodeObject as? JsonObject)?.let {
             LocationInfo(
                 it.get("latitude").asString.toDouble(),

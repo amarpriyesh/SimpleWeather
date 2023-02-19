@@ -26,7 +26,7 @@ data class DayForecast(
 
 data class DayForecastHourly(
     @SerializedName("dt") val dt: Long,
-    @SerializedName("temp") val temperatureRange: Double,
+    @SerializedName("temp") val temperature: Double,
     @SerializedName("weather") val weather: List<WeatherCondition>
 )
 

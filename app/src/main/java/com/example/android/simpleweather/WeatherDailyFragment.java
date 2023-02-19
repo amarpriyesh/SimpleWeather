@@ -17,15 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.simpleweather.databinding.FragmentWeatherDailyBinding;
 
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
 
 @AndroidEntryPoint
 public class WeatherDailyFragment extends Fragment {
@@ -33,6 +31,8 @@ public class WeatherDailyFragment extends Fragment {
     private static final String TEMPERATURE_UNIT = "°F";
 
     private SearchViewModel viewModel;
+
+    private Utility util ;
     private FragmentWeatherDailyBinding binding;
     private RecyclerView.Adapter<WeatherViewHolder> adapter;
     public List<WeatherModel> weatherList = new ArrayList<>();
@@ -43,64 +43,28 @@ public class WeatherDailyFragment extends Fragment {
         binding = FragmentWeatherDailyBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         viewModel.setContextView(getActivity());
-
+        util = new Utility();
         return binding.getRoot();
 
     }
 
-    private LocalDateTime getDate(long epochSeconds) {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(epochSeconds * 1000), ZoneId.systemDefault());
-    }
-
-    private String getDateString(long epochSeconds) {
-        return getDate(epochSeconds).format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-    }
-
-
-    private int kelvinToFahrenheit(double kelvin) {
-        return (int) Math.round((kelvin - 273.15) * (9.0 / 5.0) + 32.0);
-    }
-
-    private WeatherType weatherIdToWeatherType(int weatherId) {
-        if (200 <= weatherId && weatherId <= 299) {
-            return WeatherType.THUNDERSTORM;
-        }
-        if (300 <= weatherId && weatherId <= 399) {
-            return WeatherType.DRIZZLE;
-        }
-        if (500 <= weatherId && weatherId <= 599) {
-            return WeatherType.RAIN;
-        }
-        if (600 <= weatherId && weatherId <= 699) {
-            return WeatherType.SNOW;
-        }
-        if (700 <= weatherId && weatherId <= 799) {
-            return WeatherType.ATMOSPHERE;
-        }
-        if (weatherId == 800) {
-            return WeatherType.CLEAR;
-        }
-        if (801 <= weatherId && weatherId <= 809) {
-            return WeatherType.CLOUDS;
-        }
-        throw new IllegalArgumentException(String.format("%d is not a recognized weather ID", weatherId));
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel.getForecast().observe(getViewLifecycleOwner(), weatherForecast -> {
+
             weatherList.clear();
             try {
                 weatherList.addAll(weatherForecast.getDaily().stream().map(dayForecast ->
-                                new WeatherModel(getDateString(dayForecast.getDt()),
+                                new WeatherModel(util.getDateString(dayForecast.getDt()),
 
-                                        weatherIdToWeatherType(dayForecast.getWeather().get(0).getId()),
+                                        util.weatherIdToWeatherType(dayForecast.getWeather().get(0).getId()),
                                         dayForecast.getWeather().get(0).getMain(),
                                         TEMPERATURE_UNIT,
-                                        kelvinToFahrenheit(dayForecast.getTemperatureRange().getMin()),
-                                        kelvinToFahrenheit(dayForecast.getTemperatureRange().getMax())))
+                                        util.kelvinToFahrenheit(dayForecast.getTemperatureRange().getMin()),
+                                        util.kelvinToFahrenheit(dayForecast.getTemperatureRange().getMax())))
                         .collect(Collectors.toList()));
             }
             catch (IndexOutOfBoundsException e) {

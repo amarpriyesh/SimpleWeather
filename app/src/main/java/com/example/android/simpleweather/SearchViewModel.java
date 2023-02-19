@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.android.simpleweather.dto.CurrentForecast;
 import com.example.android.simpleweather.dto.WeatherForecast;
 import com.example.android.simpleweather.dto.WeatherForecastHourly;
 
@@ -30,6 +31,8 @@ public class SearchViewModel extends ViewModel {
 
     private final MutableLiveData<WeatherForecastHourly> _forecastHourly = new MutableLiveData<>();
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
+    private final MutableLiveData<CurrentForecast> current_forecast = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> current_isLoading = new MutableLiveData<>();
 
     public LiveData<WeatherForecast> getForecast() {
         return _forecast;
@@ -42,6 +45,14 @@ public class SearchViewModel extends ViewModel {
     }
 
     private Context context;
+
+    public MutableLiveData<CurrentForecast> getCurrentForecast() {
+        return current_forecast;
+    }
+
+    public MutableLiveData<Boolean> getCurrentIsLoading() {
+        return current_isLoading;
+    }
 
     @Inject
     SearchViewModel(WeatherRepository weatherRepository) {
@@ -120,5 +131,29 @@ public class SearchViewModel extends ViewModel {
     }
     // https://api.openweathermap.org/data/2.5/onecall?lat=42.1&lon=-73.1&appid=681089bf5b3e811ed4584a8f55fc5120
 
+    void getCurrentWeatherData(double latitude, double longitude) {
+        current_isLoading.setValue(true);
+        Log.d(TAG, String.format("Making current weather data request for %s, %s", latitude, longitude));
+        weatherRepository.getCurrentWeatherData(latitude, longitude, new Callback<CurrentForecast>() {
+            @Override
+            public void onResponse(@NonNull Call<CurrentForecast> call, @NonNull Response<CurrentForecast> response) {
+                Log.d(TAG, "Got success response");
+                CurrentForecast body = response.body();
+                if (body != null) {
+                    current_forecast.setValue(body);
+                }
+                current_isLoading.setValue(false);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CurrentForecast> call, @NonNull Throwable t) {
+                Log.d(TAG, "Got failure response");
+                Log.e(TAG, t.getMessage());
+                current_isLoading.setValue(false);
+                throw new IllegalStateException(t);
+                // TODO implement UI in case of failure
+            }
+        });
+    }
 
 }

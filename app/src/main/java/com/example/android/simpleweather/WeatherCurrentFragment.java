@@ -82,36 +82,36 @@ public class WeatherCurrentFragment extends Fragment {
 
         viewModel.getCurrentForecast().observe(getViewLifecycleOwner(), currentForecast -> {
             // TODO: Verify that weather list has at least one element
-            weatherModel = new WeatherModel(getDateString(currentForecast.getCurrent().getDt())
-            , weatherIdToWeatherType(currentForecast.getCurrent().getWeather().get(0).getId()), currentForecast.getCurrent().getWeather().get(0).getMain(), TEMPERATURE_UNIT, kelvinToFahrenheit(currentForecast.getCurrent().getTemp()));
-
-            binding.day.setText(weatherModel.getDay());
-            binding.weatherCondition.setText(weatherModel.getWeatherDescription());
-            binding.temperature.setText(String.format("%s%s", weatherModel.getCurrentTemp(), weatherModel.getUnit()));
-            switch (weatherModel.getWeatherType()) {
-                case THUNDERSTORM:
-                    binding.imageView.setImageResource(R.drawable.thunderstorm);
-                    break;
-                case DRIZZLE:
-                    binding.imageView.setImageResource(R.drawable.rain_shower);
-                    break;
-                case RAIN:
-                    binding.imageView.setImageResource(R.drawable.rain);
-                    break;
-                case SNOW:
-                    binding.imageView.setImageResource(R.drawable.snow);
-                    break;
-                case ATMOSPHERE:
-                    binding.imageView.setImageResource(R.drawable.mist);
-                    break;
-                case CLEAR:
-                    binding.imageView.setImageResource(R.drawable.clearsky);
-                    break;
-                case CLOUDS:
-                    binding.imageView.setImageResource(R.drawable.broken_clouds);
-                    break;
-            }
+            weatherModel = new WeatherModel(getDateString(currentForecast.getCurrent().get(0).getDt()
+            ), weatherIdToWeatherType(currentForecast.getWeather().get(0).getId()), currentForecast.getWeather().get(0).getMain(), TEMPERATURE_UNIT, kelvinToFahrenheit(currentForecast.getCurrent().get(0).getTemp()));
         });
+
+        binding.day.setText(weatherModel.getDay());
+        binding.weatherCondition.setText(weatherModel.getWeatherDescription());
+        binding.temperature.setText(String.format("%s%s", weatherModel.getCurrentTemp(), weatherModel.getUnit()));
+        switch (weatherModel.getWeatherType()) {
+            case THUNDERSTORM:
+                binding.imageView.setImageResource(R.drawable.thunderstorm);
+                break;
+            case DRIZZLE:
+                binding.imageView.setImageResource(R.drawable.rain_shower);
+                break;
+            case RAIN:
+                binding.imageView.setImageResource(R.drawable.rain);
+                break;
+            case SNOW:
+                binding.imageView.setImageResource(R.drawable.snow);
+                break;
+            case ATMOSPHERE:
+                binding.imageView.setImageResource(R.drawable.mist);
+                break;
+            case CLEAR:
+                binding.imageView.setImageResource(R.drawable.clearsky);
+                break;
+            case CLOUDS:
+                binding.imageView.setImageResource(R.drawable.broken_clouds);
+                break;
+        }
 
         viewModel.getCurrentIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {

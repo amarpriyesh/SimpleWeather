@@ -1,6 +1,6 @@
 package com.example.android.simpleweather;
 
-
+import com.example.android.simpleweather.dto.CurrentForecast;
 import com.example.android.simpleweather.dto.WeatherForecast;
 import com.example.android.simpleweather.dto.WeatherForecastHourly;
 
@@ -34,6 +34,13 @@ class WeatherRepository {
         catch (IllegalAccessError e) {
             new IllegalAccessError("service unavailable");
         }
+
+        // TODO: see if exception is possible here, and deal with it if needed
+    }
+
+    public void getCurrentWeatherData(double latitude, double longitude, Callback<CurrentForecast> responseCallback) {
+        Call<CurrentForecast> call = service.getCurrentWeather(latitude, longitude, BuildConfig.OPEN_WEATHER_KEY);
+        call.enqueue(responseCallback);
 
         // TODO: see if exception is possible here, and deal with it if needed
     }

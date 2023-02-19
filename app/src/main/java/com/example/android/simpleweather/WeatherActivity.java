@@ -28,8 +28,6 @@ public class WeatherActivity extends AppCompatActivity {
     public TextView zip;
     public TextView loadingText;
 
-    private SearchViewModel viewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +35,6 @@ public class WeatherActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
         setContentView(R.layout.activity_weather);
 

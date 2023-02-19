@@ -17,8 +17,8 @@ class WeatherRepository {
     private final OpenWeatherDataSource service = RetrofitClientInstance.getRetrofit().create(OpenWeatherDataSource.class);
 
     public void getWeatherData(double latitude, double longitude, Callback<WeatherForecast> responseCallback) {
-       // Call<WeatherForecast> call = service.getWeather(latitude, longitude, BuildConfig.OPEN_WEATHER_KEY);
-       // call.enqueue(responseCallback);
+        Call<WeatherForecast> call = service.getWeather(latitude, longitude, BuildConfig.OPEN_WEATHER_KEY);
+        call.enqueue(responseCallback);
 
         // TODO: see if exception is possible here, and deal with it if needed
     }

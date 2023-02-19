@@ -19,11 +19,18 @@ import retrofit2.Response;
 @HiltViewModel
 public class SearchViewModel extends ViewModel {
 
+    private static final String TAG = "SearchViewModel";
+
     private final WeatherRepository weatherRepository;
     private final MutableLiveData<WeatherForecast> _forecast = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
 
     public LiveData<WeatherForecast> getForecast() {
         return _forecast;
+    }
+
+    public LiveData<Boolean> getIsLoading() {
+        return _isLoading;
     }
 
     @Inject
@@ -32,18 +39,24 @@ public class SearchViewModel extends ViewModel {
     }
 
     void getWeatherData(double latitude, double longitude) {
+        _isLoading.setValue(true);
+        Log.d(TAG, String.format("Making weather data request for %s, %s", latitude, longitude));
         weatherRepository.getWeatherData(latitude, longitude, new Callback<WeatherForecast>() {
             @Override
             public void onResponse(@NonNull Call<WeatherForecast> call, @NonNull Response<WeatherForecast> response) {
+                Log.d(TAG, "Got success response");
                 WeatherForecast body = response.body();
                 if (body != null) {
                     _forecast.setValue(body);
                 }
+                _isLoading.setValue(false);
             }
 
             @Override
             public void onFailure(@NonNull Call<WeatherForecast> call, @NonNull Throwable t) {
-                Log.e("WeatherRepository", t.getMessage());
+                Log.d(TAG, "Got failure response");
+                Log.e(TAG, t.getMessage());
+                _isLoading.setValue(false);
                 throw new IllegalStateException(t);
                 // TODO implement UI in case of failure
             }

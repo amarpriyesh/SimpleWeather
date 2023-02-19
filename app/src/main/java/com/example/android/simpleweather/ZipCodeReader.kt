@@ -10,7 +10,7 @@ class ZipCodeReader(private val resources: Resources) {
         val text = resources.openRawResource(R.raw.zipcodes)
             .bufferedReader().use { it.readText() }
         val zipCodes = Gson().fromJson(text, JsonObject::class.java)
-        val zipCodeObject =  zipCodes.get(zipCode);
+        val zipCodeObject =  zipCodes.get(zipCode)
 
 
 

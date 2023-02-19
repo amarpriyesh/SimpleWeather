@@ -1,8 +1,7 @@
 package com.example.android.simpleweather;
 
-import android.app.Activity;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +10,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.simpleweather.databinding.FragmentWeatherDailyBinding;
-import com.example.android.simpleweather.dto.DayForecastHourly;
 
-import java.security.KeyException;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -98,18 +95,21 @@ public class WeatherDailyFragment extends Fragment {
 
         viewModel.getForecast().observe(getViewLifecycleOwner(), weatherForecast -> {
             weatherList.clear();
-            weatherList.addAll(weatherForecast.getDaily().stream().map(dayForecast ->
-                            new WeatherModel(getDateString(dayForecast.getDt()),
+            try {
+                weatherList.addAll(weatherForecast.getDaily().stream().map(dayForecast ->
+                                new WeatherModel(getDateString(dayForecast.getDt()),
 
-                                    weatherIdToWeatherType(dayForecast.getWeather().get(0).getId()),
-                                    dayForecast.getWeather().get(0).getMain(),
-                                    TEMPERATURE_UNIT,
-                                    kelvinToFahrenheit(dayForecast.getTemperatureRange().getMin()),
-                                    kelvinToFahrenheit(dayForecast.getTemperatureRange().getMax())))
-                    .collect(Collectors.toList()));
-            if (weatherList.size()<1) {
-                Toast.makeText(getActivity(),"The loaction has no weather data",Toast.LENGTH_SHORT).show();
+                                        weatherIdToWeatherType(dayForecast.getWeather().get(0).getId()),
+                                        dayForecast.getWeather().get(0).getMain(),
+                                        TEMPERATURE_UNIT,
+                                        kelvinToFahrenheit(dayForecast.getTemperatureRange().getMin()),
+                                        kelvinToFahrenheit(dayForecast.getTemperatureRange().getMax())))
+                        .collect(Collectors.toList()));
             }
+            catch (IndexOutOfBoundsException e) {
+                Toast.makeText(getActivity(),"Day forecast doesn't have weather at index 0",Toast.LENGTH_SHORT).show();
+            }
+
             adapter.notifyDataSetChanged();
         });
 
@@ -177,6 +177,7 @@ public class WeatherDailyFragment extends Fragment {
             locationInfo = new ZipCodeReader(getResources()).getLatLong(binding.zipCodeEditText.getText().toString());
 
         }
+
         catch (Exception e){
             throw new NullPointerException("Zip not found");
 

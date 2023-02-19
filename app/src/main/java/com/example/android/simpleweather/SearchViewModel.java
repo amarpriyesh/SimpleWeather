@@ -15,6 +15,7 @@ import com.example.android.simpleweather.dto.WeatherForecastHourly;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import dagger.hilt.android.qualifiers.ActivityContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,7 +106,7 @@ public class SearchViewModel extends ViewModel {
                 Log.e(TAG, t.getMessage());
                 _isLoading.setValue(false);
                 Toast.makeText(context,"Got failure response from the server",Toast.LENGTH_SHORT).show();
-                // throw new IllegalStateException(t.getMessage());
+
 
             }
         });

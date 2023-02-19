@@ -69,9 +69,9 @@ public class WeatherDailyFragment extends Fragment {
 
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
-                binding.loadingText.setVisibility(View.VISIBLE);
+                binding.indeterminateLoadingBar.setVisibility(View.VISIBLE);
             } else {
-                binding.loadingText.setVisibility(View.GONE);
+                binding.indeterminateLoadingBar.setVisibility(View.GONE);
             }
         });
 

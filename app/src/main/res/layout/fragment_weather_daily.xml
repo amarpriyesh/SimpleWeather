@@ -51,17 +51,14 @@
             android:layout_marginStart="8dp"
             android:text="@string/search" />
 
-        <TextView
-            android:id="@+id/loadingText"
+        <ProgressBar
+            android:id="@+id/indeterminate_loading_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:gravity="center"
-            android:text="@string/loading"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+            app:layout_constraintBottom_toBottomOf="@id/search"
             app:layout_constraintStart_toEndOf="@id/search"
-            app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -97,7 +97,7 @@ public class WeatherDailyFragment extends Fragment {
             }
 
             catch (NullPointerException e) {
-                Toast.makeText(getActivity(), e.getMessage()+" Try other zip codes",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_SHORT).show();
 
             }
             catch (Exception e) {
@@ -125,12 +125,12 @@ public class WeatherDailyFragment extends Fragment {
         }
 
         catch (Exception e){
-            throw new NullPointerException("Zip not found");
+            throw new NullPointerException(String.format("%s is not recognized as a valid zip code",binding.zipCodeEditText.getText().toString()));
 
 
         }
         if (locationInfo==null) {
-            throw new NullPointerException("Zip not found");
+            throw new NullPointerException(String.format("%s is not recognized as a valid zip code",binding.zipCodeEditText.getText().toString()));
         }
 
         return locationInfo;

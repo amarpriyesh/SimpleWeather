@@ -119,13 +119,14 @@ public class WeatherHourlyFragment extends Fragment {
             locationInfo = new ZipCodeReader(getResources()).getLatLong(binding.zipCodeEditText.getText().toString());
 
         }
+
         catch (Exception e){
-            throw new NullPointerException("Zip not found");
+            throw new NullPointerException(String.format("%s is not recognized as a valid zip code",binding.zipCodeEditText.getText().toString()));
 
 
         }
         if (locationInfo==null) {
-            throw new NullPointerException("Zip not found");
+            throw new NullPointerException(String.format("%s is not recognized as a valid zip code",binding.zipCodeEditText.getText().toString()));
         }
 
         return locationInfo;

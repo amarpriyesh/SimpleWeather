@@ -21,39 +21,19 @@ public class WeatherModel {
         return day;
     }
 
-    public void setDay(String day) {
-        this.day = day;
-    }
-
     public String getWeatherCondition() {
         return weatherCondition;
-    }
-
-    public void setWeatherCondition(String weatherCondition) {
-        this.weatherCondition = weatherCondition;
     }
 
     public String getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
     public int getMin() {
         return min;
     }
 
-    public void setMin(int min) {
-        this.min = min;
-    }
-
     public int getMax() {
         return max;
-    }
-
-    public void setMax(int max) {
-        this.max = max;
     }
 }

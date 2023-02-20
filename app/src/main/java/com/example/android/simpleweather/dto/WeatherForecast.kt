@@ -45,7 +45,6 @@ data class WeatherCondition(
     @SerializedName("description") val description: String
 )
 
-
 data class CurrentForecast(
     @SerializedName("current") val current: CurrentCondition,
 )

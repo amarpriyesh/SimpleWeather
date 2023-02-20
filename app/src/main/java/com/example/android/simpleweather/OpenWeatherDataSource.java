@@ -15,7 +15,6 @@ interface OpenWeatherDataSource {
     @GET("onecall")
     Call<CurrentForecast> getCurrentWeather(@Query("lat") double latitude, @Query("lon") double longitude, @Query("appid") String apiKey);
 
-
     @GET("onecall")
     Call<WeatherForecastHourly> getWeatherHourly(@Query("lat") double latitude, @Query("lon") double longitude, @Query("appid") String apiKey);
 

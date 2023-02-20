@@ -14,7 +14,7 @@
             android:id="@+id/search_flow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="25dp"
             app:constraint_referenced_ids="zip_code_tv,zip_code_edit_text,search"
             app:flow_horizontalGap="8dp"
             app:flow_horizontalStyle="packed"

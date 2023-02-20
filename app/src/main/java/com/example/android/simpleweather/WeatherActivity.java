@@ -24,15 +24,18 @@ public class WeatherActivity extends AppCompatActivity {
 
 
         binding.bottomNav.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.daily:
-                    replaceFragment(new WeatherDailyFragment());
-                    return true;
-                case R.id.current:
-                    replaceFragment(new WeatherCurrentFragment());
-                    return true;
+            if (item.getItemId() == R.id.daily) {
+                replaceFragment(new WeatherDailyFragment());
+                return true;
+            } else if (item.getItemId() == R.id.hourly) {
+                replaceFragment(new WeatherHourlyFragment());
+                return true;
+            } else if (item.getItemId() == R.id.current) {
+                replaceFragment(new WeatherCurrentFragment());
+                return true;
+            } else {
+                return false;
             }
-            return false;
         });
     }
 

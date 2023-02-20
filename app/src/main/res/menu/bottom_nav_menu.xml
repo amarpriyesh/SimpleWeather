@@ -5,6 +5,9 @@
     <item android:title="@string/daily"
         android:id="@+id/daily"
         android:icon="@drawable/daily"/>
+    <item android:title="@string/hourly"
+        android:id="@+id/hourly"
+        android:icon="@drawable/hourly"/>
     <item android:title="@string/current"
         android:id="@+id/current"
         android:icon="@drawable/current"/>

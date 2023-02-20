@@ -11,4 +11,5 @@
     <string name="acc_weather_icon">Weather icon</string>
     <string name="daily">Daily</string>
     <string name="current">Current</string>
+    <string name="hourly">Hourly</string>
 </resources>

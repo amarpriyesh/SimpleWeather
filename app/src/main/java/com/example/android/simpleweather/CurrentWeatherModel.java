@@ -1,24 +1,20 @@
 package com.example.android.simpleweather;
 
-public class WeatherModel {
+public class CurrentWeatherModel {
     private final String day;
     private final WeatherType weatherType;
     private final String weatherDescription;
     private final String unit;
-    private final int min;
-    private final int max;
+    private final int currentTemp;
 
 
-
-    public WeatherModel(String day, WeatherType weatherType, String weatherDescription, String unit, int min, int max) {
+    public CurrentWeatherModel(String day, WeatherType weatherType, String weatherDescription, String unit, int currentTemp) {
         this.day = day;
         this.weatherType = weatherType;
         this.weatherDescription = weatherDescription;
         this.unit = unit;
-        this.min = min;
-        this.max = max;
+        this.currentTemp = currentTemp;
     }
-
 
     public String getDay() {
         return day;
@@ -36,12 +32,8 @@ public class WeatherModel {
         return unit;
     }
 
-    public int getMin() {
-        return min;
+    public int getCurrentTemp() {
+        return currentTemp;
     }
-
-    public int getMax() {
-        return max;
-    }
-
 }
+
